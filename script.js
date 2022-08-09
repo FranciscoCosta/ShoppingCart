@@ -38,7 +38,17 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
   return li;
 };
 
-window.onload = () => { };
+const test = async () => {
+  const adiciona = document.querySelector('.items');
+  const v = await fetchProducts('computador');
+  const resultado = v.results;
+  resultado.forEach((element) => {
+    const resultadoDes = ({ sku: element.id, name: element.title, salePrice: element.price, image: element.thumbnail });
+    const produtos = createProductItemElement(resultadoDes);
+    adiciona.appendChild(produtos);
+  });
+};
 
-
-// FC
+window.onload = () => {
+  test();
+};
