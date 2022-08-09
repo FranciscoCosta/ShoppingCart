@@ -5,6 +5,8 @@ const createProductImageElement = (imageSource) => {
   return img;
 };
 
+let dadosCarinho = [];
+
 const createCustomElement = (element, className, innerText) => {
   const e = document.createElement(element);
   e.className = className;
@@ -31,8 +33,18 @@ const teste2 = async (event) => {
   const resultado = await fetchItem(id);
   const resultadoDes = ({ sku: resultado.id, name: resultado.title, salePrice: resultado.price });
   const card = createCartItemElement(resultadoDes);
+  dadosCarinho.push(resultadoDes);
+  saveCartItems('card', dadosCarinho); 
   const pai = document.querySelector('.cart__items');
   pai.appendChild(card);
+};
+
+const renderizaCarinho = async () => {
+  dadosCarinho.forEach((element) => {
+    const card = createCartItemElement(element);
+    const pai = document.querySelector('.cart__items');
+    pai.appendChild(card);
+  });
 };
 
 const createProductItemElement = ({ sku, name, image }) => {
@@ -59,6 +71,8 @@ const test = async () => {
   });
 };
 
-window.onload = () => {
+window.onload = async () => {
   test();
+  dadosCarinho = getSavedCartItems('card') || [];
+  renderizaCarinho();
 };
