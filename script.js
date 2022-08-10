@@ -5,6 +5,7 @@ const createProductImageElement = (imageSource) => {
   return img;
 };
 let total = 0;
+const valorCompras = [];
 
 const pai = document.querySelector('.cart__items');
 const areaTotal = document.querySelector('.cart');
@@ -28,13 +29,16 @@ const createCustomElement = (element, className, innerText) => {
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
 const cartItemClickListener = (event) => {
+  const remove = (event.target.querySelector('span').innerText);
+  total -= remove;
+  valor.innerHTML = total;
   event.target.remove();
 };
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.innerHTML = `SKU: ${sku} | NAME: ${name} | PRICE: $<span>${salePrice}</span>`;
   li.addEventListener('click', cartItemClickListener);
   return li;
 };
@@ -43,6 +47,8 @@ const teste2 = async (event) => {
   const id = await getSkuFromProductItem(event.target.parentElement);  
   const resultado = await fetchItem(id);
   const resultadoDes = ({ sku: resultado.id, name: resultado.title, salePrice: resultado.price });
+  valorCompras.push(resultado.price);
+  console.log(valorCompras);
   const card = createCartItemElement(resultadoDes);
   dadosCarinho.push(resultadoDes);
   saveCartItems('card', dadosCarinho); 
