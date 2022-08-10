@@ -14,6 +14,17 @@ valor.className = 'total-price';
 valor.innerText = total;
 areaTotal.appendChild(valor);
 
+function carregando() {
+  const carregandoPagina = document.createElement('p');
+  carregandoPagina.classList = 'loading';
+  carregandoPagina.innerText = 'carregando...';
+  carregandoPagina.style.display = 'none';
+  areaTotal.appendChild(carregandoPagina);
+}
+function esconde() {
+  areaTotal.removeChild(areaTotal.lastChild);
+}
+
 function atualizaTotal(variavel) {
   total += variavel;
   valor.innerHTML = total;
@@ -44,7 +55,9 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
 };
 
 const teste2 = async (event) => {
+  carregando();
   const id = await getSkuFromProductItem(event.target.parentElement);  
+  esconde();
   const resultado = await fetchItem(id);
   const resultadoDes = ({ sku: resultado.id, name: resultado.title, salePrice: resultado.price });
   valorCompras.push(resultado.price);
@@ -77,8 +90,10 @@ const createProductItemElement = ({ sku, name, image }) => {
   return section;
 };
 const test = async () => {
+  carregando();
   const adiciona = document.querySelector('.items');
   const v = await fetchProducts('computador');
+  esconde();
   const resultado = v.results;
   resultado.forEach((element) => {
     const resultadoDes = ({ sku: element.id, name: element.title, image: element.thumbnail });
